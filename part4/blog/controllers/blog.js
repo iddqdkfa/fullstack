@@ -7,7 +7,9 @@ const Config = require('../utils/config')
 const mongoose = require('mongoose');
 
 blogRouter.get('/blogs', async (request, response) => {
-    const blogs = await Blog.find({}).populate('user', {username: 1, name: 1, id: 1});
+    const blogs = await Blog.find({}).populate('user', {username: 1, name: 1, id: 1, likes: 1});
+    
+    console.log("blogs in blogs route ier", blogs)
 
 
     response.json(blogs);
@@ -31,9 +33,10 @@ blogRouter.get('/blogs', async (request, response) => {
       console.log("No likes");
       request.body.likes = 0;
     }
-    console.log("about to make new blog")
 
     const body = request.body;
+    console.log("body is", body)
+
 
     console.log("User is", user)
 
@@ -45,6 +48,7 @@ blogRouter.get('/blogs', async (request, response) => {
       user: user._id
     })
 
+    console.log("Blog in controller before saved is", blog)
 
     console.log("about to save")
   
@@ -102,7 +106,7 @@ blogRouter.get('/blogs', async (request, response) => {
   })
 
   blogRouter.put('/blogs/:id', async (request, response) => {
-    const body = request.body._doc
+    const body = request.body
     console.log("New body is", body);
   
     console.log("I am in the update controller1")

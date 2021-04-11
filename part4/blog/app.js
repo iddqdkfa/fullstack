@@ -5,6 +5,8 @@ const middleWare = require('./middleware/middleware')
 const blogRouter = require('./controllers/blog');
 const usersRouter = require('./controllers/user')
 const loginRouter = require('./controllers/login')
+const testingRouter = require('./controllers/reset')
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -15,9 +17,10 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, us
 
 app.use(cors())
 app.use(express.json())
+app.use('/api/testing', testingRouter)
+app.use('/api/login', loginRouter)
+app.use('/api', usersRouter);
 app.use(middleWare.tokenExtractor)
 app.use('/api', middleWare.userExtractor, blogRouter);
-app.use('/api', usersRouter);
-app.use('/api/login', loginRouter)
 
 module.exports = app;
