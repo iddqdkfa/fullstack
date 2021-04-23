@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import {voteAdded, clear} from '../reducers/notificationReducer'
 import anecdoteService from '../services/anecdotes'
+import { connect } from 'react-redux'
+
 
 
 const NewAnecdote = (props) => {
@@ -15,11 +17,11 @@ const NewAnecdote = (props) => {
 
         const newAnecdote = await anecdoteService.createNew(anecdote)    
         console.log("New anexcdote is", newAnecdote)
-        dispatch(voteAdded("Hello this is a test", 5000))
-        dispatch(voteAdded(newAnecdote.content, 5000))
+        props.voteAdded("Hello this is a test", 5000)
+        props.voteAdded(newAnecdote.content, 5000)
 
 
-        dispatch(createAnecdote(newAnecdote))
+        props.createAnecdote(newAnecdote)
 
 
       }
@@ -35,4 +37,16 @@ const NewAnecdote = (props) => {
   )
 }
 
-export default NewAnecdote
+
+
+const mapDispatchToProps = {  
+  voteAdded,
+  createAnecdote
+
+}
+
+const NewAnecdoteConnected = connect(
+  null,
+  mapDispatchToProps)(NewAnecdote)
+
+export default NewAnecdoteConnected

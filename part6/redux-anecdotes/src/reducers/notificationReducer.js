@@ -1,6 +1,6 @@
 const notificationAtStart = "Hello, this is a notification"
   
-
+let x = 0;
   
   const notificationReducer = (state = notificationAtStart, action) => {
     console.log('state now: ', state)
@@ -23,11 +23,16 @@ const notificationAtStart = "Hello, this is a notification"
   
   export const voteAdded = (notification, time) => {
     return async dispatch => {
+
+      if(x != 0){
+        clearTimeout(x)
+      }
         
-        setTimeout(() => {
+         x = setTimeout(() => {
             dispatch(clear(''))
           }, time)
 
+          console.log("Notif x is ", x)
         dispatch({
             type: 'NOTIFICATION_VOTE',
             notification: 'You voted for ' + notification
