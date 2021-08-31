@@ -83,7 +83,7 @@ for ( let key in myObj){
   for(let i = 0; i < blogs.length; i++){
     let temp = myObj[blogs[i].author]
     if(myObj[blogs[i].author]){
-      myObj[blogs[i].author] = myObj[blogs[i].author] +blogs[i].likes;
+      myObj[blogs[i].author] = myObj[blogs[i].author] + blogs[i].likes;
     }
     else {
       myObj[blogs[i].author] = blogs[i].likes;

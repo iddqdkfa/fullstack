@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import blogSerivce from '../services/blogs'
+import { useSelector, useDispatch } from 'react-redux'
 
 
 const Blog = ({ blog, setBlogs }) => {
+  const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)  
 const [hide, setHide] = useState('View')  
 const [loginVisible, setLoginVisible] = useState(false)
@@ -26,24 +29,43 @@ const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
 
   const like = async () => {
-    const response = await blogSerivce.like(blog.title, blog.author, blog.url, (newLike), blog.id)
+   // const response = await blogSerivce.like(blog.title, blog.author, blog.url, (newLike), blog.id)
 
-    setNewLike(response.likes);
+    const likeBlogAction = (id) => {
+      return {
+        type: 'LIKE_BLOG',
+        data: {
+          id: id
+        }
+      }
+    }
 
-    console.log("like resposne is", response)
+    dispatch(likeBlogAction(blog.id))
+
+
+    setNewLike(blog.likes);
 
 
   }
 
+  const deleteBlogAction = (id) => {
+    return {
+      type: 'DELETE_BLOG',
+      data: {
+        id: id
+      }
+    }
+  }
 
   const deleteBlog = async () => {
     const result = window.confirm("Are you sure you want to delete this blog?");
 
     if(result){
-     const response = await blogSerivce.deleteBlog( blog.id)
-      console.log("Blog deleted", response);
-      const blogs = await blogSerivce.getAll()
-      setBlogs(blogs)
+     //const response = await blogSerivce.deleteBlog( blog.id)
+     dispatch(deleteBlogAction(blog.id))
+     // console.log("Blog deleted", response);
+      //const blogs = await blogSerivce.getAll()
+      //setBlogs(allBlogs)
 
     }
 
@@ -60,16 +82,16 @@ const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
   return (
     <div style={blogStyle}>      
-    <div>
+    <div class="list-group-item">
         {blog.title} {blog.author}
-        <button className = "viewableButton"  onClick = {clickLogic}>
+        <button className = "viewableButton"   onClick = {clickLogic}>
           {hide}
         </button>
         <button className = "delete" onClick = {deleteBlog}>
           Delete
         </button>
       </div>
-      <div className="togglableContent" style={showWhenVisible}>
+      <div className="togglableContent " style={showWhenVisible}>
         {blog.url} 
         Likes: { newLike} 
         <button className="likeButton" onClick = {like}>
